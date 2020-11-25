@@ -2,7 +2,7 @@ clear
 clc
 
 % 程序主函数代码如下：
-t0 = 0; tt = 10;
+t0 = 0; tt = 20;
 y0 = 0; yt = 6;
 
 X0 = [-7.50, 0.25, -6.25, 4.75, -2.25, 7.00];
@@ -20,13 +20,13 @@ X0 = [-7.50, 0.25, -6.25, 4.75, -2.25, 7.00];
 % subplot(2,3,6); plot(t,Xt(:,6),'linewidth',1.5); grid;
 
 subplot(2,1,1); plot(t,Xt(:,1), t,Xt(:,2), t,Xt(:,3), t,Xt(:,4), t,Xt(:,5), t,Xt(:,6), 'linewidth',1.5); 
-xlabel('time(sec)'); ylabel('states');
+xlabel('Time(sec)'); ylabel('Nodes States');
 legend('x_1','x_2','x_3','x_4','x_5','x_6')
 title('No U Control');
 grid
 
 subplot(2,1,2); plot(tU,XtU(:,1), tU,XtU(:,2), tU,XtU(:,3), tU,XtU(:,4), tU,XtU(:,5), tU,XtU(:,6), 'linewidth',1.5); 
-xlabel('time(sec)'); ylabel('states');
+xlabel('Time(sec)'); ylabel('Nodes States');
 legend('x_1','x_2','x_3','x_4','x_5','x_6')
 title('Contains U Control');
 grid
