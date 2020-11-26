@@ -6,26 +6,33 @@ t0 = 0; tt = 3;
 
 X0 = [-20.50, 30.25, -13.25, 24.75, -7.25, 16.00];
 
+% 定义全局变量
 global A B L_a L_b L_c
 
+% 随机选取的系数 T 和 K 值
 T1 = 0.81; T2 = 0.27; T3 = 0.95; T4 = 0.79; T5 = 0.67; T6 = 0.70;
 K1 = 0.91; K2 = 0.55; K3 = 0.49; K4 = 0.96; K5 = 0.76; K6 = 0.03;
 
+% 构建系统状态矩阵
 A =[-1/T1 0 0 0 0 0;0 -1/T2 0 0 0 0;0 0 -1/T3 0 0 0;0 0 0 -1/T4 0 0;0 0 0 0 -1/T5 0;0 0 0 0 0 -1/T6;];
 B =[K1/T1 0 0 0 0 0;0 K2/T2 0 0 0 0;0 0 K3/T3 0 0 0;0 0 0 K4/T4 0 0;0 0 0 0 K5/T5 0;0 0 0 0 0 K6/T6;];
 
+% 输入拓扑图 Ga 的拉氏矩阵
 D_a = [1 0 0 0 0 0;0 1 0 0 0 0;0 0 1 0 0 0;0 0 0 1 0 0;0 0 0 0 1 0;0 0 0 0 0 1;];
 A_a = [0 1 0 0 0 0;0 0 1 0 0 0;0 0 0 1 0 0;0 0 0 0 1 0;0 0 0 0 0 1;1 0 0 0 0 0;];
 L_a = D_a - A_a;
 
+% 输入拓扑图 Gb 的拉氏矩阵
 D_b = [2 0 0 0 0 0;0 1 0 0 0 0;0 0 1 0 0 0;0 0 0 1 0 0;0 0 0 0 1 0;0 0 0 0 0 1;];
 A_b = [0 1 0 1 0 0;0 0 1 0 0 0;0 0 0 1 0 0;0 0 0 0 1 0;0 0 0 0 0 1;1 0 0 0 0 0;];
 L_b = D_b - A_b;
 
+% 输入拓扑图 Gc 的拉氏矩阵
 D_c = [2 0 0 0 0 0;0 2 0 0 0 0;0 0 2 0 0 0;0 0 0 1 0 0;0 0 0 0 1 0;0 0 0 0 0 1;];
 A_c = [0 1 0 1 0 0;0 0 1 0 1 0;0 0 0 1 0 1;0 0 0 0 1 0;0 0 0 0 0 1;1 0 0 0 0 0;];
 L_c = D_c - A_c;
 
+% 求解各个系统的微分方程解
 [t, Xt] = ode45(@SunFun, [t0 tt], X0);
 [tUa, XtUa] = ode45(@SunFunUa, [t0 tt], X0);
 [tUb, XtUb] = ode45(@SunFunUb, [t0 tt], X0);
@@ -69,7 +76,7 @@ title('Switching Topology G_a -> G_b -> G_c');
 grid
 
 
-% 微分方程函数，状态导数
+% 无控制输入系统求解
 function xdot = SunFun(t,x)
 % 参数
 global A
@@ -78,6 +85,7 @@ global A
 xdot = (A) * x;
 end
 
+% 固定拓扑结构 Ga 求解
 function xdot = SunFunUa(t,x)
 % 参数
 global A B L_a
@@ -86,6 +94,7 @@ global A B L_a
 xdot = (A) * x + (B) * (-L_a) * x;
 end
 
+% 固定拓扑结构 Gb 求解
 function xdot = SunFunUb(t,x)
 % 参数
 global A B L_b
@@ -94,6 +103,7 @@ global A B L_b
 xdot = (A) * x + (B) * (-L_b) * x;
 end
 
+% 固定拓扑结构 Gc 求解
 function xdot = SunFunUc(t,x)
 % 参数
 global A B L_c
@@ -102,6 +112,7 @@ global A B L_c
 xdot = (A) * x + (B) * (-L_c) * x;
 end
 
+% 切换拓扑图求解
 function xdot = SunFunS(t,x)
 % 参数
 global A B L_a L_b L_c
